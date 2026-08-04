@@ -1,0 +1,18 @@
+Screenshot Placeholder
+======================
+
+This is a placeholder file for the statusline screenshot.
+
+To add an actual screenshot:
+1. Run cc-statusline-berk in Claude Code
+2. Take a screenshot of the statusline at the bottom of your terminal
+3. Save it as docs/screenshot.png
+4. Update README.md to reference the new file
+
+The screenshot should show:
+- Project name with GitHub link
+- Model name (e.g., claude-sonnet-4-20250514)
+- Context usage percentage
+- Usage limits with countdown
+- Git branch name
+- GitHub PR link (if applicable)

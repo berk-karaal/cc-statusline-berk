@@ -1,0 +1,41 @@
+{
+  "name": "cc-statusline-berk",
+  "version": "1.0.0",
+  "description": "A customizable statusline CLI tool for Claude Code",
+  "type": "module",
+  "main": "dist/cc-statusline-berk.js",
+  "bin": {
+    "cc-statusline-berk": "dist/cc-statusline-berk.js"
+  },
+  "scripts": {
+    "build": "bun build ./src/index.ts --target bun --minify --outfile dist/cc-statusline-berk.js",
+    "dev": "bun run src/index.ts",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write",
+    "format": "biome format . --write",
+    "install:public": "env -u npm_config_registry -u NPM_CONFIG_REGISTRY bun install",
+    "verify:lockfile": "bun run scripts/verify-lockfile.ts"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/bun": "^1.2.0",
+    "typescript": "^6.0.2"
+  },
+  "files": ["dist/", "README.md", "LICENSE"],
+  "engines": {
+    "bun": ">=1.2.0"
+  },
+  "keywords": ["claude-code", "statusline", "cli", "terminal"],
+  "license": "MIT",
+  "author": "berk-karaal <karaalberk7@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/berk-karaal/cc-statusline-berk.git"
+  },
+  "homepage": "https://github.com/berk-karaal/cc-statusline-berk#readme",
+  "bugs": {
+    "url": "https://github.com/berk-karaal/cc-statusline-berk/issues"
+  }
+}

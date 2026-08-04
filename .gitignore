@@ -1,0 +1,60 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Planning (GSD workflow artifacts)
+.planning/
+
+# Local tool files
+.bg-shell/
+
+# Machine-specific notes
+*.local.md
+
+# Local agent/editor config
+.claude/settings.local.json
+
+# Environment files
+.env*
+!.env.example
+
+# Credentials — never commit
+.npmrc
+.netrc
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+*credentials*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Test coverage
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Bun
+bun.lockb
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Cache
+.cache/
