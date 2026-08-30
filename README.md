@@ -25,7 +25,8 @@ Configure in Claude Code settings (`~/.claude/settings.json`):
 
 ```json
 {
-  "statusline": {
+  "statusLine": {
+    "type": "command",
     "command": "cc-statusline-berk"
   }
 }
@@ -55,7 +56,8 @@ Configure in Claude Code settings with the absolute path:
 
 ```json
 {
-  "statusline": {
+  "statusLine": {
+    "type": "command",
     "command": "/absolute/path/to/cc-statusline-berk/dist/cc-statusline-berk.js"
   }
 }
