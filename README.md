@@ -5,7 +5,7 @@
 
 A customizable statusline CLI tool for Claude Code that displays rich contextual information at the bottom of the terminal interface.
 
-![Screenshot](docs/screenshot-placeholder.png)
+![cc-statusline-berk screenshot](docs/screenshot.png)
 
 ## Quickstart
 
