@@ -97,3 +97,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and release process
 ## License
 
 [MIT](LICENSE) © Berk Karaal
+
