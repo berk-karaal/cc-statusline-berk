@@ -3,25 +3,23 @@
 [![npm version](https://badge.fury.io/js/cc-statusline-berk.svg)](https://www.npmjs.com/package/cc-statusline-berk)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A customizable statusline CLI tool for Claude Code that displays rich contextual information at the bottom of the terminal interface.
+This is the status line I use in Claude Code. Setup steps are below, and what each item shows is explained further down. The project name and PR number are clickable links to GitHub, which I find really handy.
 
 ![cc-statusline-berk screenshot](docs/screenshot.png)
 
-## Quickstart
+## Setup
 
-**Requirements:** [Bun](https://bun.sh/) >= 1.2.0
+Requires [Bun](https://bun.sh/) >= 1.2.0.
 
-Install globally:
+Install:
 
 ```bash
-# Via npm
 npm install -g cc-statusline-berk
-
-# Or via Bun
+# or
 bun install -g cc-statusline-berk
 ```
 
-Configure in Claude Code settings (`~/.claude/settings.json`):
+Add to `~/.claude/settings.json`:
 
 ```json
 {
@@ -32,27 +30,18 @@ Configure in Claude Code settings (`~/.claude/settings.json`):
 }
 ```
 
-## Installation
+Restart Claude Code.
 
-### Global Installation (Recommended)
-
-```bash
-npm install -g cc-statusline-berk
-```
-
-### Local Installation (from source)
+### From source
 
 ```bash
-# Clone repository
 git clone https://github.com/berk-karaal/cc-statusline-berk.git
 cd cc-statusline-berk
-
-# Install dependencies and build
 just install
 just build
 ```
 
-Configure in Claude Code settings with the absolute path:
+Then point `command` at the built file:
 
 ```json
 {
@@ -63,36 +52,27 @@ Configure in Claude Code settings with the absolute path:
 }
 ```
 
-## Metrics
+## What it shows
 
-The statusline displays the following information (left to right):
+Left to right:
 
-1. **Model** — Claude model name (e.g., "Opus", "Sonnet", "Haiku")
-2. **Context Usage** — Percentage of context window used with window size (e.g., "12% (1M)")
-3. **Rate Limits** — Pro user rate limit usage with countdown timers:
-   - 5-hour rolling window percentage and reset time
-   - 7-day rolling window percentage and reset time
-4. **Git Branch** — Current git branch name
-5. **Project** — Project name with clickable GitHub repository link (when git remote exists)
-6. **Pull Request** — PR number with clickable link (when a PR exists for current branch)
-7. **Current Time** — Local time in 24-hour format with seconds
+1. **Model** — e.g. "Opus", "Sonnet", "Haiku"
+2. **Context usage** — percentage of the context window used, with window size (e.g. "12% (1M)")
+3. **Rate limits** — 5-hour and 7-day usage percentages with reset countdowns
+4. **Git branch**
+5. **Project** — project name, linked to the GitHub repo when a remote exists
+6. **Pull request** — PR number, linked, when one exists for the current branch (needs the `gh` CLI, logged in)
+7. **Time** — local time, 24-hour format
 
-### Zero-Config Approach
+Items are laid out across up to three lines; when the terminal is narrow, lower-priority items are dropped.
 
-cc-statusline-berk works out of the box with no configuration required. Simply install and point Claude Code to the binary — the tool automatically detects your git repository, GitHub remotes, and branch information.
+No configuration. Git info is detected from the current directory.
 
-### OSC 8 Hyperlinks
-
-Clickable links to GitHub repositories and PRs use [OSC 8](https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda) terminal hyperlinks. These work in most modern terminal emulators including:
-
-- iTerm2 (macOS)
-- Windows Terminal
-- GNOME Terminal 3.26+
-- VS Code integrated terminal
+Links use [OSC 8](https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda) terminal hyperlinks, supported by most modern terminals (iTerm2, Windows Terminal, GNOME Terminal 3.26+, VS Code). Icons are Nerd Font glyphs, so a Nerd Font-patched terminal font is needed.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and release process guidelines.
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
