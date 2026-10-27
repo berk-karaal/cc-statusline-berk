@@ -70,6 +70,18 @@ No configuration. Git info is detected from the current directory.
 
 Links use [OSC 8](https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda) terminal hyperlinks, supported by most modern terminals (iTerm2, Windows Terminal, GNOME Terminal 3.26+, VS Code). Icons are Nerd Font glyphs, so a Nerd Font-patched terminal font is needed.
 
+If the links aren't clickable, Claude Code may not recognise your terminal (e.g. some multiplexers) and strips them. Force them on in `~/.claude/settings.json`:
+
+```json
+{
+  "env": {
+    "FORCE_HYPERLINK": "1"
+  }
+}
+```
+
+Some terminals only open links on Ctrl/Cmd+click.
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).
