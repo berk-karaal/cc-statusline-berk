@@ -8,6 +8,7 @@ import {
 } from "./formatter.ts";
 import { getInput } from "./parser.ts";
 import { getTerminalWidth } from "./terminal.ts";
+import { getSessionTokens } from "./transcript.ts";
 
 async function main(): Promise<void> {
   try {
@@ -21,7 +22,12 @@ async function main(): Promise<void> {
     // Effort level and session id always get their own dedicated bottom line —
     // it bypasses the greedy/priority layout so it is never packed inline and
     // never dropped.
-    lines.push(formatSessionLine(input));
+    lines.push(
+      formatSessionLine(
+        input,
+        await getSessionTokens(input.transcript_path, cache),
+      ),
+    );
 
     // Output each line
     for (const line of lines) {

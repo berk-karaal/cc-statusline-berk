@@ -7,6 +7,7 @@ import {
   formatRateLimits,
   formatSessionLine,
   formatStatuslineMultiLine,
+  formatTokens,
 } from "./formatter.ts";
 
 describe("formatModelName", () => {
@@ -115,6 +116,59 @@ describe("formatSessionLine", () => {
 
   test("empty session_id is treated as missing", () => {
     expect(formatSessionLine({ session_id: "" })).not.toContain("session: ");
+  });
+
+  test("shows token counts after the session id", () => {
+    const line = formatSessionLine(
+      {
+        session_id: "abc",
+        context_window: { total_input_tokens: 1000, total_output_tokens: 5 },
+      },
+      { input: 3000, output: 20 },
+    );
+    expect(line.indexOf("session: ")).toBeLessThan(
+      line.indexOf("↑3K ↓20 (last ↑1K ↓5)"),
+    );
+  });
+});
+
+describe("formatTokens", () => {
+  // Real 3-request payload: total_* equal the last request, not a session sum
+  const cw = {
+    total_input_tokens: 56611,
+    total_output_tokens: 90,
+    current_usage: {
+      input_tokens: 2,
+      output_tokens: 90,
+      cache_creation_input_tokens: 227,
+      cache_read_input_tokens: 56382,
+    },
+  };
+
+  test("session totals then last request", () => {
+    expect(formatTokens(cw, { input: 169387, output: 262 })).toBe(
+      "↑169K ↓262 (last ↑57K ↓90)",
+    );
+  });
+
+  test("only one part when the other is missing", () => {
+    expect(formatTokens(cw, null)).toBe("last ↑57K ↓90");
+    expect(formatTokens(undefined, { input: 5, output: 1 })).toBe("↑5 ↓1");
+  });
+
+  test("B and M get one decimal, whole values drop it", () => {
+    // Real totals from a 467 MB transcript
+    expect(
+      formatTokens(undefined, { input: 2_244_962_719, output: 2_203_531 }),
+    ).toBe("↑2.2B ↓2.2M");
+    expect(formatTokens(undefined, { input: 1_000_000, output: 0 })).toBe(
+      "↑1M ↓0",
+    );
+  });
+
+  test("returns null without any token data", () => {
+    expect(formatTokens(undefined, null)).toBeNull();
+    expect(formatTokens({ used_percentage: 5 }, null)).toBeNull();
   });
 });
 

@@ -34,6 +34,7 @@ export interface ClaudeCodeInput {
   };
   /** Context window usage information */
   context_window?: {
+    /** Despite the name, only the most recent request (input + cache tokens), not a session sum */
     total_input_tokens?: number;
     total_output_tokens?: number;
     /** Total context window size in tokens */

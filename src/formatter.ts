@@ -8,6 +8,7 @@ import {
   getPullRequestInfo,
 } from "./git.ts";
 import { RESET, createHyperlink } from "./hyperlink.ts";
+import type { SessionTokens } from "./transcript.ts";
 import type { ExternalUsageItem } from "./types.ts";
 import type { ClaudeCodeInput } from "./types.ts";
 import { getVisibleWidth } from "./width.ts";
@@ -71,8 +72,12 @@ function getCurrentDirectoryName(input: ClaudeCodeInput): string | null {
  * e.g. 1000000 -> "1M", 200000 -> "200K"
  */
 function formatTokenCount(tokens: number): string {
+  // Unary + drops a trailing ".0" so 1M stays "1M", not "1.0M"
+  if (tokens >= 1_000_000_000) {
+    return `${+(tokens / 1_000_000_000).toFixed(1)}B`;
+  }
   if (tokens >= 1_000_000) {
-    return `${Math.round(tokens / 1_000_000)}M`;
+    return `${+(tokens / 1_000_000).toFixed(1)}M`;
   }
   if (tokens >= 1_000) {
     return `${Math.round(tokens / 1_000)}K`;
@@ -219,7 +224,10 @@ export function formatEffort(input: ClaudeCodeInput): string {
  * The full id is intentionally left untruncated to keep it copyable.
  * The session id is omitted when Claude Code did not provide one.
  */
-export function formatSessionLine(input: ClaudeCodeInput): string {
+export function formatSessionLine(
+  input: ClaudeCodeInput,
+  sessionTokens: SessionTokens | null = null,
+): string {
   const parts = [formatEffort(input)];
 
   const sessionId = input.session_id;
@@ -227,7 +235,27 @@ export function formatSessionLine(input: ClaudeCodeInput): string {
     parts.push(`${ICON_SESSION} session: ${sessionId}`);
   }
 
+  const tokens = formatTokens(input.context_window, sessionTokens);
+  if (tokens) parts.push(tokens);
+
   return parts.join(SEPARATOR);
+}
+
+/** Session totals plus the last request, e.g. "↑2.2B ↓2.2M (last ↑57K ↓90)". */
+export function formatTokens(
+  cw: ClaudeCodeInput["context_window"],
+  session: SessionTokens | null,
+): string | null {
+  const arrows = (i: number, o: number) =>
+    `↑${formatTokenCount(i)} ↓${formatTokenCount(o)}`;
+  // Despite the names, total_* hold only the most recent request (incl. cache tokens)
+  const last =
+    cw?.total_input_tokens !== undefined
+      ? `last ${arrows(cw.total_input_tokens, cw.total_output_tokens ?? 0)}`
+      : null;
+  if (!session) return last;
+  const total = arrows(session.input, session.output);
+  return last ? `${total} (${last})` : total;
 }
 
 /**
